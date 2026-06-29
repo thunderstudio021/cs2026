@@ -109,11 +109,14 @@ body{background:#05080f;color:#eef2f8;font-family:'Manrope',system-ui,sans-serif
       <p style="margin-top:18px;font-size:clamp(15px,1.5vw,18px);color:#aab4c8">Veja como a cooperação acontece na prática.</p>
     </div>
     <div data-reveal data-video-wrap style="position:relative;margin:46px auto 0;max-width:980px;aspect-ratio:16/9;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 50px 120px -55px rgba(56,189,248,.55)">
-      <video data-video data-src="assets/evento-16x9.mp4" preload="none" muted loop playsinline controls style="width:100%;height:100%;object-fit:cover;display:block;background:#0a0f1c"></video>
-      <div data-video-ph style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:repeating-linear-gradient(135deg,#0a0f1c,#0a0f1c 13px,#0c1322 13px,#0c1322 26px);transition:opacity .5s ease">
+      <video data-video data-src="assets/video-movimento.mp4" preload="metadata" muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;background:#0a0f1c"></video>
+      <button data-video-toggle aria-label="Reproduzir ou pausar vídeo" style="position:absolute;left:16px;bottom:16px;z-index:3;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(8,14,26,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s ease,transform .25s ease,border-color .25s ease" style-hover="background:rgba(56,189,248,.22);border-color:rgba(56,189,248,.55);transform:scale(1.06)">
+        <span data-icon-play style="display:block;width:0;height:0;border-left:15px solid #eaf3ff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px"></span>
+        <span data-icon-pause style="display:none;align-items:center;gap:5px"><span style="display:block;width:5px;height:17px;background:#eaf3ff;border-radius:1px"></span><span style="display:block;width:5px;height:17px;background:#eaf3ff;border-radius:1px"></span></span>
+      </button>
+      <div data-video-ph style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:repeating-linear-gradient(135deg,#0a0f1c,#0a0f1c 13px,#0c1322 13px,#0c1322 26px);transition:opacity .5s ease;pointer-events:none">
         <div style="width:74px;height:74px;border-radius:50%;background:rgba(56,189,248,.14);border:1px solid rgba(56,189,248,.4);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px -8px rgba(56,189,248,.5)"><span style="width:0;height:0;border-left:21px solid #5fd0f5;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:5px"></span></div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#aab4c8;text-align:center">Vídeo 16:9 · Destaque das edições</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;color:#5f6c84">substitua por assets/evento-16x9.mp4</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#aab4c8;text-align:center">Conexões Seguras · Em movimento</div>
       </div>
     </div>
   </div>
@@ -1196,6 +1199,31 @@ class Component extends DCLogic {
       const ph = wrap && wrap.querySelector('[data-video-ph]');
       const ready = () => { if (ph) { ph.style.opacity = '0'; ph.style.pointerEvents = 'none'; } };
       v.addEventListener('loadeddata', () => { if (v.videoWidth) ready(); });
+
+      // Custom play/pause control (native controls removed — only play/pause exposed).
+      const toggle = wrap && wrap.querySelector('[data-video-toggle]');
+      if (toggle) {
+        const iPlay = toggle.querySelector('[data-icon-play]');
+        const iPause = toggle.querySelector('[data-icon-pause]');
+        const sync = () => {
+          const playing = !v.paused && !v.ended;
+          if (iPlay) iPlay.style.display = playing ? 'none' : 'block';
+          if (iPause) iPause.style.display = playing ? 'flex' : 'none';
+        };
+        toggle.addEventListener('click', () => {
+          if (v.paused || v.ended) {
+            v._manualPause = false;
+            const p = v.play(); if (p && p.catch) p.catch(() => {});
+          } else {
+            v._manualPause = true;   // stay paused even while in view
+            v.pause();
+          }
+        });
+        v.addEventListener('play', sync);
+        v.addEventListener('pause', sync);
+        v.addEventListener('ended', sync);
+        sync();
+      }
       // Only attach a source if the file actually exists (avoids a 404 + keeps
       // the placeholder until the user drops their video at the given path).
       const srcUrl = v.getAttribute('data-src');
@@ -1212,10 +1240,13 @@ class Component extends DCLogic {
         entries.forEach((e) => {
           const v = e.target;
           if (e.isIntersecting && e.intersectionRatio >= 0.55) {
-            const p = v.play();
-            if (p && p.catch) p.catch(() => {});
+            if (!v._manualPause) {
+              const p = v.play();
+              if (p && p.catch) p.catch(() => {});
+            }
           } else {
             v.pause();
+            v._manualPause = false;   // scrolled away — re-entry autoplays again
           }
         });
       }, { threshold: [0, 0.55, 0.9] });
