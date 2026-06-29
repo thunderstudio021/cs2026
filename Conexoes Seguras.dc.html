@@ -28,6 +28,19 @@ body{background:#05080f;color:#eef2f8;font-family:'Manrope',system-ui,sans-serif
   [data-hero-badge]{font-size:9.5px !important;letter-spacing:.16em !important}
   [data-hero-title]{font-size:clamp(38px,9vw,46px) !important;max-width:18ch !important}
 }
+/* ===== Ecossistema — órbita rotativa ===== */
+.eco-orbit{position:relative;width:min(520px,86vw);max-width:520px;aspect-ratio:1;margin:clamp(34px,6vw,54px) auto 0}
+.eco-rotor{position:absolute;inset:0;animation:ecoSpin 54s linear infinite;transform-origin:50% 50%;will-change:transform}
+.eco-node{position:absolute;transform:translate(-50%,-50%);width:clamp(80px,15.5vw,116px)}
+.eco-card{display:block;animation:ecoSpinRev 54s linear infinite;transform-origin:50% 50%;text-align:center;padding:10px 8px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:clamp(10px,2.5vw,13px);color:#cdd5e4;font-weight:500;line-height:1.22;letter-spacing:.004em;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 10px 26px -18px rgba(0,0,0,.7);transition:border-color .3s ease,background .3s ease;will-change:transform}
+.eco-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;display:flex;align-items:center;justify-content:center;width:clamp(112px,23%,150px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.22),rgba(99,102,241,.12));border:1px solid rgba(56,189,248,.4);box-shadow:inset 0 0 30px rgba(56,189,248,.12)}
+.eco-hub img{width:74%;height:auto;filter:brightness(1.6) contrast(1.05);opacity:.96}
+.eco-hub-glow{position:absolute;left:50%;top:50%;width:clamp(150px,32%,210px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.5),rgba(99,102,241,.2) 45%,transparent 70%);filter:blur(16px);z-index:2;pointer-events:none;animation:ecoGlow 3.6s ease-in-out infinite}
+@keyframes ecoSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes ecoSpinRev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes ecoGlow{0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(.9)}50%{opacity:.92;transform:translate(-50%,-50%) scale(1.08)}}
+@media (max-width:560px){.eco-card{padding:8px 6px;line-height:1.18}}
+@media (prefers-reduced-motion:reduce){.eco-rotor,.eco-card,.eco-hub-glow{animation:none !important}}
 </style>
 <script src="image-slot.js"></script>
 </helmet>
@@ -404,31 +417,30 @@ body{background:#05080f;color:#eef2f8;font-family:'Manrope',system-ui,sans-serif
       <p style="margin-top:18px;font-size:clamp(15px,1.5vw,18px);color:#aab4c8">Uma rede que cresce a cada edição.</p>
     </div>
 
-    <div data-reveal style="position:relative;width:min(640px,94vw);aspect-ratio:1;margin:46px auto 0">
-      <svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
-        <defs><linearGradient id="ln" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8" stop-opacity=".55"/><stop offset="1" stop-color="#a86cf6" stop-opacity=".15"/></linearGradient></defs>
-        <line x1="50" y1="50" x2="50" y2="10" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
-        <line x1="50" y1="50" x2="78.3" y2="21.7" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
-        <line x1="50" y1="50" x2="90" y2="50" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
-        <line x1="50" y1="50" x2="78.3" y2="78.3" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
-        <line x1="50" y1="50" x2="50" y2="90" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
-        <line x1="50" y1="50" x2="21.7" y2="78.3" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
-        <line x1="50" y1="50" x2="10" y2="50" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
-        <line x1="50" y1="50" x2="21.7" y2="21.7" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
-      </svg>
-      <!-- center hub -->
-      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:clamp(120px,22%,150px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.22),rgba(99,102,241,.12));border:1px solid rgba(56,189,248,.4);box-shadow:0 0 50px -8px rgba(56,189,248,.5),inset 0 0 30px rgba(56,189,248,.12)">
-        <img src="assets/logo.png" alt="Conexões Seguras" style="width:76%;height:auto;filter:brightness(1.6) contrast(1.05);opacity:.96"/>
+    <div data-reveal class="eco-orbit">
+      <div class="eco-rotor">
+        <svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+          <defs><linearGradient id="ln" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8" stop-opacity=".55"/><stop offset="1" stop-color="#a86cf6" stop-opacity=".15"/></linearGradient></defs>
+          <line x1="50" y1="50" x2="50" y2="15" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+          <line x1="50" y1="50" x2="74.7" y2="25.3" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+          <line x1="50" y1="50" x2="85" y2="50" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+          <line x1="50" y1="50" x2="74.7" y2="74.7" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+          <line x1="50" y1="50" x2="50" y2="85" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+          <line x1="50" y1="50" x2="25.3" y2="74.7" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+          <line x1="50" y1="50" x2="15" y2="50" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+          <line x1="50" y1="50" x2="25.3" y2="25.3" stroke="url(#ln)" stroke-width=".5" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <div class="eco-node" style="left:50%;top:15%"><span class="eco-card">Big Techs</span></div>
+        <div class="eco-node" style="left:74.7%;top:25.3%"><span class="eco-card">Sistema Financeiro</span></div>
+        <div class="eco-node" style="left:85%;top:50%"><span class="eco-card">Universidades &amp; Academia</span></div>
+        <div class="eco-node" style="left:74.7%;top:74.7%"><span class="eco-card">Observatórios Temáticos</span></div>
+        <div class="eco-node" style="left:50%;top:85%"><span class="eco-card">Manual Nacional de Investigação</span></div>
+        <div class="eco-node" style="left:25.3%;top:74.7%"><span class="eco-card">Proteção da Infância</span></div>
+        <div class="eco-node" style="left:15%;top:50%"><span class="eco-card">Poder Judiciário &amp; MP</span></div>
+        <div class="eco-node" style="left:25.3%;top:25.3%"><span class="eco-card">Polícia &amp; Forças de Segurança</span></div>
       </div>
-      <!-- nodes -->
-      <div data-node style="position:absolute;left:50%;top:10%;transform:translate(-50%,-50%);width:clamp(86px,15vw,128px);text-align:center;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(11px,1.4vw,13px);color:#cdd5e4;font-weight:500;line-height:1.25;backdrop-filter:blur(6px)">Big Techs</div>
-      <div data-node style="position:absolute;left:78.3%;top:21.7%;transform:translate(-50%,-50%);width:clamp(86px,15vw,128px);text-align:center;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(11px,1.4vw,13px);color:#cdd5e4;font-weight:500;line-height:1.25;backdrop-filter:blur(6px)">Sistema Financeiro</div>
-      <div data-node style="position:absolute;left:90%;top:50%;transform:translate(-50%,-50%);width:clamp(86px,15vw,128px);text-align:center;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(11px,1.4vw,13px);color:#cdd5e4;font-weight:500;line-height:1.25;backdrop-filter:blur(6px)">Universidades &amp; Academia</div>
-      <div data-node style="position:absolute;left:78.3%;top:78.3%;transform:translate(-50%,-50%);width:clamp(86px,15vw,128px);text-align:center;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(11px,1.4vw,13px);color:#cdd5e4;font-weight:500;line-height:1.25;backdrop-filter:blur(6px)">Observatórios Temáticos</div>
-      <div data-node style="position:absolute;left:50%;top:90%;transform:translate(-50%,-50%);width:clamp(86px,15vw,128px);text-align:center;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(11px,1.4vw,13px);color:#cdd5e4;font-weight:500;line-height:1.25;backdrop-filter:blur(6px)">Manual Nacional de Investigação</div>
-      <div data-node style="position:absolute;left:21.7%;top:78.3%;transform:translate(-50%,-50%);width:clamp(86px,15vw,128px);text-align:center;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(11px,1.4vw,13px);color:#cdd5e4;font-weight:500;line-height:1.25;backdrop-filter:blur(6px)">Proteção da Infância</div>
-      <div data-node style="position:absolute;left:10%;top:50%;transform:translate(-50%,-50%);width:clamp(86px,15vw,128px);text-align:center;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(11px,1.4vw,13px);color:#cdd5e4;font-weight:500;line-height:1.25;backdrop-filter:blur(6px)">Poder Judiciário &amp; MP</div>
-      <div data-node style="position:absolute;left:21.7%;top:21.7%;transform:translate(-50%,-50%);width:clamp(86px,15vw,128px);text-align:center;padding:11px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:clamp(11px,1.4vw,13px);color:#cdd5e4;font-weight:500;line-height:1.25;backdrop-filter:blur(6px)">Polícia &amp; Forças de Segurança</div>
+      <div class="eco-hub-glow"></div>
+      <div class="eco-hub"><img src="assets/logo.png" alt="Conexões Seguras"/></div>
     </div>
   </div>
 </section>
