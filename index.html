@@ -1142,8 +1142,11 @@ class Component extends DCLogic {
     }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
     titles.forEach((el) => tio.observe(el));
     this._teIO = tio;
-    // Safety net: never leave a title hidden if observers are throttled.
-    this._teSafety = setTimeout(() => { titles.forEach((el) => reveal(el)); }, 4500);
+    // Safety net: only rescue titles already in view (so off-screen sections stay
+    // hidden until scrolled to — the IntersectionObserver triggers each on arrival).
+    this._teSafety = setTimeout(() => {
+      titles.forEach((el) => { if (el.getBoundingClientRect().top < window.innerHeight) reveal(el); });
+    }, 4500);
   }
 
   componentDidMount(){
@@ -1179,8 +1182,11 @@ class Component extends DCLogic {
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
       reveals.forEach((el) => io.observe(el));
-      // Safety net: never leave content hidden if observers/timers are throttled.
-      this._revealSafety = setTimeout(() => { reveals.forEach((el) => revealEl(el, 0)); }, 4500);
+      // Safety net: only rescue elements already in view; off-screen sections stay
+      // hidden until scrolled to, so each reveals on arrival via the observer.
+      this._revealSafety = setTimeout(() => {
+        reveals.forEach((el) => { if (el.getBoundingClientRect().top < window.innerHeight) revealEl(el, 0); });
+      }, 4500);
     }
 
     // Per-word blur reveal on section titles
@@ -1198,9 +1204,10 @@ class Component extends DCLogic {
         });
       }, { threshold: 0.4 });
       counts.forEach((el) => cio.observe(el));
-      // Safety net for throttled observers.
+      // Safety net for throttled observers — only finalize counters already in view,
+      // so off-screen number sections still count up when scrolled into view.
       this._countSafety = setTimeout(() => {
-        counts.forEach((el) => { if (!el.dataset.done) this.setCount(el, +el.dataset.count); });
+        counts.forEach((el) => { if (!el.dataset.done && el.getBoundingClientRect().top < window.innerHeight) this.setCount(el, +el.dataset.count); });
       }, 4800);
     }
 
