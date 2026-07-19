@@ -303,9 +303,18 @@ body{background:#05080f;color:#eef2f8;font-family:'Manrope',system-ui,sans-serif
       <p style="margin-top:20px;font-size:clamp(15px,1.5vw,18px);color:#aab4c8">Registros das edições do Conexões Seguras — painéis, bastidores e conexões que aconteceram ao vivo.</p>
     </div>
     <div style="columns:clamp(220px,30vw,300px);column-gap:16px;margin-top:48px">
-      <div data-reveal style="break-inside:avoid;margin:0 0 16px"><image-slot id="evt-1" style="display:block;width:100%;height:360px" shape="rounded" radius="16" placeholder="Foto do evento"></image-slot></div>
-      <div data-reveal style="break-inside:avoid;margin:0 0 16px"><image-slot id="evt-2" style="display:block;width:100%;height:250px" shape="rounded" radius="16" placeholder="Foto do evento"></image-slot></div>
-      <div data-reveal style="break-inside:avoid;margin:0 0 16px"><image-slot id="evt-3" style="display:block;width:100%;height:300px" shape="rounded" radius="16" placeholder="Foto do evento"></image-slot></div>
+      <!-- 1ª FOTO — Painel com delegado (foto enviada pelo usuário) -->
+      <div data-reveal style="break-inside:avoid;margin:0 0 16px">
+        <img src="assets/cs2026-foto-painel.jpg" alt="Painel Conexões Seguras 2026 — Delegado no palco" style="display:block;width:100%;height:360px;object-fit:cover;border-radius:16px" loading="lazy"/>
+      </div>
+      <!-- 2ª FOTO — auditório lotado -->
+      <div data-reveal style="break-inside:avoid;margin:0 0 16px">
+        <img src="assets/cs2026-foto-auditorio.jpg" alt="Auditório Conexões Seguras 2026" style="display:block;width:100%;height:260px;object-fit:cover;border-radius:16px" loading="lazy"/>
+      </div>
+      <!-- 3ª FOTO — palco com painelistas -->
+      <div data-reveal style="break-inside:avoid;margin:0 0 16px">
+        <img src="assets/cs2026-foto-palco.jpg" alt="Palco Conexões Seguras 2026" style="display:block;width:100%;height:300px;object-fit:cover;border-radius:16px" loading="lazy"/>
+      </div>
       <div data-reveal style="break-inside:avoid;margin:0 0 16px"><image-slot id="evt-4" style="display:block;width:100%;height:240px" shape="rounded" radius="16" placeholder="Foto do evento"></image-slot></div>
       <div data-reveal style="break-inside:avoid;margin:0 0 16px"><image-slot id="evt-5" style="display:block;width:100%;height:330px" shape="rounded" radius="16" placeholder="Foto do evento"></image-slot></div>
       <div data-reveal style="break-inside:avoid;margin:0 0 16px"><image-slot id="evt-6" style="display:block;width:100%;height:270px" shape="rounded" radius="16" placeholder="Foto do evento"></image-slot></div>
@@ -604,30 +613,70 @@ body{background:#05080f;color:#eef2f8;font-family:'Manrope',system-ui,sans-serif
   <div style="max-width:1180px;margin:36px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:#4f5a70;text-align:center">CONEXÕES SEGURAS · CONECTANDO QUEM PROTEGE A SOCIEDADE</div>
 </footer>
 
-<!-- ====================== OVERLAY — TODAS AS FOTOS ====================== -->
-<div ref="{{ galleryRef }}" role="dialog" aria-label="Todas as fotos dos eventos" style="position:fixed;inset:0;z-index:120;display:none;opacity:0;transition:opacity .3s ease;flex-direction:column;background:rgba(4,6,12,.97);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)">
+<!-- ====================== OVERLAY — GALERIA DE ÁLBUNS ====================== -->
+<div ref="{{ galleryRef }}" role="dialog" aria-label="Álbuns de fotos dos eventos" style="position:fixed;inset:0;z-index:120;display:none;opacity:0;transition:opacity .3s ease;flex-direction:column;background:rgba(4,6,12,.97);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)">
+  <!-- HEADER -->
   <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(18px,5vw,48px);border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0">
-    <div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#5fd0f5">Galeria completa</div>
-      <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(18px,2.4vw,26px);color:#f4f8ff;margin-top:4px">Todas as fotos dos eventos</div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <!-- Botão Voltar (oculto quando mostrando álbuns) -->
+      <button type="button" id="gal-back-btn" onClick="{{ galleryBack }}" style="display:none;align-items:center;gap:7px;padding:9px 16px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#eef2f8;font-family:'Manrope',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:background .25s ease,border-color .25s ease" style-hover="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.4)">← Álbuns</button>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#5fd0f5" id="gal-subtitle">Galeria de eventos</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(17px,2.2vw,24px);color:#f4f8ff;margin-top:3px" id="gal-title">Todos os álbuns</div>
+      </div>
     </div>
     <button type="button" onClick="{{ closeGallery }}" style="display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);color:#eef2f8;font-family:'Manrope',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:transform .25s ease,background .25s ease,border-color .25s ease" style-hover="transform:translateY(-2px);background:rgba(56,189,248,.12);border-color:rgba(56,189,248,.45)">Fechar <span style="font-size:17px;line-height:1">✕</span></button>
   </div>
-  <div style="flex:1;overflow-y:auto;padding:clamp(20px,4vw,44px)">
-    <div style="columns:clamp(200px,24vw,280px);column-gap:16px;max-width:1320px;margin:0 auto">
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-1" style="display:block;width:100%;height:300px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-2" style="display:block;width:100%;height:380px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-3" style="display:block;width:100%;height:240px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-4" style="display:block;width:100%;height:320px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-5" style="display:block;width:100%;height:280px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-6" style="display:block;width:100%;height:360px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-7" style="display:block;width:100%;height:250px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-8" style="display:block;width:100%;height:330px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-9" style="display:block;width:100%;height:290px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-10" style="display:block;width:100%;height:360px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-11" style="display:block;width:100%;height:240px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
-      <div style="break-inside:avoid;margin:0 0 16px"><image-slot id="gal-12" style="display:block;width:100%;height:310px" shape="rounded" radius="14" placeholder="Foto do evento"></image-slot></div>
+
+  <!-- SCROLL AREA -->
+  <div style="flex:1;overflow-y:auto;padding:clamp(24px,4vw,52px) clamp(18px,5vw,48px)">
+
+    <!-- VISTA DE ÁLBUNS -->
+    <div id="gal-albums-view" style="max-width:1100px;margin:0 auto">
+      <p style="font-size:14px;color:#6f7c93;margin-bottom:28px">Clique em um álbum para ver as fotos.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px">
+        <!-- ÁLBUM 1: CONEXÕES SEGURAS 2026 -->
+        <div onClick="{{ openAlbum }}" data-album="cs2026" style="cursor:pointer;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease" style-hover="transform:translateY(-5px);border-color:rgba(56,189,248,.4);box-shadow:0 24px 52px -28px rgba(56,189,248,.45)">
+          <div style="position:relative;height:180px;overflow:hidden">
+            <img src="assets/cs2026-foto-painel.jpg" alt="Conexões Seguras 2026" style="width:100%;height:100%;object-fit:cover;transition:transform .5s ease" loading="lazy"/>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(4,6,12,.85) 100%)"></div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 16px">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#5fd0f5">3 fotos · Jun 2026</div>
+            </div>
+          </div>
+          <div style="padding:16px 18px 20px">
+            <div style="font-family:'Space Grotesk';font-weight:600;font-size:17px;color:#f4f8ff">Conexões Seguras 2026</div>
+            <div style="margin-top:6px;font-size:13px;color:#7a869e">Fórum Nacional · Polícia Civil RJ · FAEPOL</div>
+            <div style="margin-top:12px;display:flex;gap:6px">
+              <img src="assets/cs2026-foto-painel.jpg" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.1)" loading="lazy"/>
+              <img src="assets/cs2026-foto-auditorio.jpg" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.1)" loading="lazy"/>
+              <img src="assets/cs2026-foto-palco.jpg" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.1)" loading="lazy"/>
+            </div>
+          </div>
+        </div>
+        <!-- Card placeholder para próximos álbuns -->
+        <div style="border-radius:18px;border:1px dashed rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;min-height:220px;padding:24px;text-align:center">
+          <div style="width:44px;height:44px;border-radius:12px;border:1px dashed rgba(56,189,248,.3);display:flex;align-items:center;justify-content:center;font-size:22px;color:rgba(56,189,248,.4)">+</div>
+          <div style="font-size:14px;color:#4f5a70">Próximas edições<br>em breve</div>
+        </div>
+      </div>
     </div>
+
+    <!-- VISTA DE FOTOS DO ÁLBUM (oculta por padrão) -->
+    <div id="gal-photos-view" style="display:none;max-width:1320px;margin:0 auto">
+      <div style="columns:clamp(200px,24vw,280px);column-gap:16px">
+        <div style="break-inside:avoid;margin:0 0 16px">
+          <img src="assets/cs2026-foto-painel.jpg" alt="Painel Conexões Seguras 2026" style="display:block;width:100%;border-radius:14px;cursor:zoom-in" loading="lazy"/>
+        </div>
+        <div style="break-inside:avoid;margin:0 0 16px">
+          <img src="assets/cs2026-foto-auditorio.jpg" alt="Auditório Conexões Seguras 2026" style="display:block;width:100%;border-radius:14px;cursor:zoom-in" loading="lazy"/>
+        </div>
+        <div style="break-inside:avoid;margin:0 0 16px">
+          <img src="assets/cs2026-foto-palco.jpg" alt="Palco Conexões Seguras 2026" style="display:block;width:100%;border-radius:14px;cursor:zoom-in" loading="lazy"/>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -661,6 +710,45 @@ class Component extends DCLogic {
     g.style.opacity = '0';
     document.body.style.overflow = '';
     setTimeout(() => { if (g.style.opacity === '0') g.style.display = 'none'; }, 320);
+    // Reset to albums view when closing
+    this._showAlbumsView();
+  }
+
+  _showAlbumsView(){
+    const albumsView = document.getElementById('gal-albums-view');
+    const photosView = document.getElementById('gal-photos-view');
+    const backBtn = document.getElementById('gal-back-btn');
+    const title = document.getElementById('gal-title');
+    const subtitle = document.getElementById('gal-subtitle');
+    if (albumsView) albumsView.style.display = 'block';
+    if (photosView) photosView.style.display = 'none';
+    if (backBtn) backBtn.style.display = 'none';
+    if (title) title.textContent = 'Todos os álbuns';
+    if (subtitle) subtitle.textContent = 'Galeria de eventos';
+  }
+
+  openAlbum(e){
+    const albumsView = document.getElementById('gal-albums-view');
+    const photosView = document.getElementById('gal-photos-view');
+    const backBtn = document.getElementById('gal-back-btn');
+    const title = document.getElementById('gal-title');
+    const subtitle = document.getElementById('gal-subtitle');
+    const albumCard = e.currentTarget;
+    const albumId = albumCard.dataset.album;
+    if (albumsView) albumsView.style.display = 'none';
+    if (photosView) photosView.style.display = 'block';
+    if (backBtn) backBtn.style.display = 'inline-flex';
+    // Album-specific title
+    const names = { 'cs2026': 'Conexões Seguras 2026' };
+    if (title) title.textContent = names[albumId] || 'Álbum';
+    if (subtitle) subtitle.textContent = 'Fórum Nacional · Polícia Civil RJ · FAEPOL';
+    // Scroll overlay to top
+    const g = this.galleryRef.current;
+    if (g) { const scrollable = g.querySelector('[style*="overflow-y:auto"]'); if (scrollable) scrollable.scrollTop = 0; }
+  }
+
+  galleryBack(){
+    this._showAlbumsView();
   }
 
   renderVals(){
@@ -673,6 +761,8 @@ class Component extends DCLogic {
       particleRef: this.particleRef,
       openGallery: () => this.openGallery(),
       closeGallery: () => this.closeGallery(),
+      openAlbum: (e) => this.openAlbum(e),
+      galleryBack: () => this.galleryBack(),
       ripple: (e) => {
         try {
           const b = e.currentTarget;
