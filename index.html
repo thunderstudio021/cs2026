@@ -911,7 +911,7 @@ class Component extends DCLogic {
       let fontSize = Math.min(H * 0.46, W * 0.30);
       let lines = wrap(fontSize);
       while ((lines.length * fontSize * 1.12 > H * 0.84 ||
-              o.measureText(lines[0]).width > maxW) && fontSize > 14) {
+              lines.some(ln => o.measureText(ln).width > maxW)) && fontSize > 14) {
         fontSize -= 2; lines = wrap(fontSize);
       }
       o.font = '700 ' + fontSize + 'px "Space Grotesk", system-ui, sans-serif';
